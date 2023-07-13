@@ -1,0 +1,23 @@
+name: QA
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: "*"
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    container:
+      image: crystallang/crystal:1.9.0
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install required packages
+        run: |
+          apt-get update
+          apt-get -yqq install cmake build-essential
+      - name: Install shards
+        run: shards install --ignore-crystal-version
+      - name: Run QA checks
+        run: make qa_crystal

@@ -1,0 +1,30 @@
+name: Specs
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: "*"
+
+jobs:
+  specs:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    container:
+      image: crystallang/crystal:1.9.0
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install required packages
+      run: |
+        apt-get update
+        apt-get -yqq install libsqlite3-dev cmake build-essential
+    - name: Install shards
+      run: shards install --ignore-crystal-version
+    - name: Cache Crystal
+      uses: actions/cache@v1
+      with:
+        path: ~/.cache/crystal
+        key: ${{ runner.os }}-crystal
+    - name: Run tests
+      run: make tests
