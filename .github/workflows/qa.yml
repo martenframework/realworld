@@ -18,6 +18,9 @@ jobs:
           apt-get update
           apt-get -yqq install cmake build-essential
       - name: Install shards
-        run: shards install --ignore-crystal-version
+        run:
+          git submodule init
+          git submodule update
+          shards install --ignore-crystal-version
       - name: Run QA checks
         run: make qa_crystal

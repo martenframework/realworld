@@ -20,7 +20,10 @@ jobs:
         apt-get update
         apt-get -yqq install libsqlite3-dev cmake build-essential
     - name: Install shards
-      run: shards install --ignore-crystal-version
+      run:
+        git submodule init
+        git submodule update
+        shards install --ignore-crystal-version
     - name: Cache Crystal
       uses: actions/cache@v1
       with:
