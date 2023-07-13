@@ -1,0 +1,82 @@
+{% extend "base.html" %}
+
+{% block content %}
+<div class="settings-page">
+  <div class="container page">
+    <div class="row">
+      <div class="col-md-6 offset-md-3 col-xs-12">
+        <h1 class="text-xs-center">Your Settings</h1>
+        {% if schema.errors.global %}
+          <div class="error-messages">
+            {% for error in schema.errors.global %}
+            <p>{{ error.message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <form method="post" action="" enctype="multipart/form-data" novalidate>
+          <input type="hidden" name="csrftoken" value="{% csrf_token %}" />
+
+          <fieldset>
+            <fieldset class="form-group">
+              <input
+                class="form-control{% if schema.image_url.errored? %} is-invalid{% endif %}"
+                type="text"
+                placeholder="URL of profile picture"
+                id="{{ schema.image_url.id }}"
+                name="{{ schema.image_url.id }}"
+                value="{{ schema.image_url.value }}"
+              />
+              {% for error in schema.image_url.errors %}<div class="invalid-feedback">{{ error.message }}</div>{% endfor %}
+            </fieldset>
+            <fieldset class="form-group">
+              <input
+                class="form-control form-control-lg{% if schema.username.errored? %} is-invalid{% endif %}"
+                type="text"
+                placeholder="Your Name"
+                id="{{ schema.username.id }}"
+                name="{{ schema.username.id }}"
+                value="{{ schema.username.value }}"
+              />
+              {% for error in schema.username.errors %}<div class="invalid-feedback">{{ error.message }}</div>{% endfor %}
+            </fieldset>
+            <fieldset class="form-group">
+              <textarea
+                class="form-control form-control-lg{% if schema.bio.errored? %} is-invalid{% endif %}"
+                rows="8"
+                placeholder="Short bio about you"
+                id="{{ schema.bio.id }}"
+                name="{{ schema.bio.id }}"
+              >{{ schema.bio.value }}</textarea>
+              {% for error in schema.bio.errors %}<div class="invalid-feedback">{{ error.message }}</div>{% endfor %}
+            </fieldset>
+            <fieldset class="form-group">
+              <input
+                class="form-control form-control-lg{% if schema.email.errored? %} is-invalid{% endif %}"
+                type="text"
+                placeholder="Email"
+                id="{{ schema.email.id }}"
+                name="{{ schema.email.id }}"
+                value="{{ schema.email.value }}"
+              />
+              {% for error in schema.email.errors %}<div class="invalid-feedback">{{ error.message }}</div>{% endfor %}
+            </fieldset>
+            <fieldset class="form-group">
+              <input
+                class="form-control form-control-lg{% if schema.password.errored? %} is-invalid{% endif %}"
+                type="password"
+                placeholder="Password"
+                id="{{ schema.password.id }}"
+                name="{{ schema.password.id }}"
+              />
+            </fieldset>
+            {% for error in schema.password.errors %}<div class="invalid-feedback">{{ error.message }}</div>{% endfor %}
+            <button class="btn btn-lg btn-primary pull-xs-right">Update Settings</button>
+          </fieldset>
+        </form>
+        <hr />
+        <a href="{% url 'auth:sign_out' %}" class="btn btn-outline-danger">Or click here to logout.</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

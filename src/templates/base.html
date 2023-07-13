@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Conduit</title>
+    <link
+      href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Titillium+Web:700|Source+Serif+Pro:400,700|Merriweather+Sans:400,700|Source+Sans+Pro:400,300,600,700,300italic,400italic,600italic,700italic"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="https://demo.productionready.io/main.css" />
+  </head>
+  <body>
+    <main>
+      <nav class="navbar navbar-light">
+        <div class="container">
+          <a class="navbar-brand" href="/">conduit</a>
+          <ul class="nav navbar-nav pull-xs-right">
+            <li class="nav-item">
+              <a class="nav-link{% if nav_bar_item == 'home' %} active{% endif %}" href="/">Home</a>
+            </li>
+            {% if request.user? %}
+            <li class="nav-item">
+              <a class="nav-link" href=""> <i class="ion-compose"></i>&nbsp;New Article </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link{% if nav_bar_item == 'settings' %} active{% endif %}" href="{% url 'profiles:settings_update' %}"> <i class="ion-gear-a"></i>&nbsp;Settings </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="">
+                <img src="{{ request.user.profile.image_url|default:'https://static.productionready.io/images/smiley-cyrus.jpg' }}" class="user-pic" alt="User's profile image">
+                {{ request.user.profile.username }}
+              </a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link{% if nav_bar_item == 'sign_in' %} active{% endif %}" href="{% url 'auth:sign_in' %}">Sign in</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link{% if nav_bar_item == 'sign_up' %} active{% endif %}" href="{% url 'auth:sign_up' %}">Sign up</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
+      {% block content %}
+      {% endblock content %}
+      <footer>
+        <div class="container">
+          <a href="/" class="logo-font">conduit</a>
+          <span class="attribution">
+            An interactive learning project from <a href="https://thinkster.io">Thinkster</a>. Code &amp;
+            design licensed under MIT.
+          </span>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>

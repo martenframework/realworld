@@ -1,0 +1,52 @@
+{% extend "base.html" %}
+
+{% block content %}
+<div class="auth-page">
+  <div class="container page">
+    <div class="row">
+      <div class="col-md-6 offset-md-3 col-xs-12">
+        <h1 class="text-xs-center">Sign in</h1>
+        <p class="text-xs-center">
+          <a href="{% url 'auth:sign_up' %}">Need an account?</a>
+        </p>
+        {% if schema.errors.global %}
+          <div class="error-messages">
+            {% for error in schema.errors.global %}
+            <p>{{ error.message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <form method="post" action="" enctype="multipart/form-data" novalidate>
+          <input type="hidden" name="csrftoken" value="{% csrf_token %}" />
+
+          <fieldset class="form-group">
+            <input
+              type="text"
+              id="{{ schema.email.id }}"
+              name="{{ schema.email.id }}"
+              value="{{ schema.email.value }}"
+              autocomplete="off"
+              class="form-control form-control-lg{% if schema.email.errored? %} is-invalid{% endif %}"
+              placeholder="Email"
+            />
+            {% for error in schema.email.errors %}<div class="invalid-feedback">{{ error.message }}</div>{% endfor %}
+          </fieldset>
+          <fieldset class="form-group">
+            <input
+              type="password"
+              id="{{ schema.password.id }}"
+              name="{{ schema.password.id }}"
+              value="{{ schema.password.value }}"
+              autocomplete="off"
+              class="form-control form-control-lg{% if schema.password.errored? %} is-invalid{% endif %}"
+              placeholder="Password"
+            />
+            {% for error in schema.password.errors %}<div class="invalid-feedback">{{ error.message }}</div>{% endfor %}
+          </fieldset>
+          <button class="btn btn-lg btn-primary pull-xs-right">Sign in</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

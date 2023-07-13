@@ -1,0 +1,4 @@
+# file: shard.override.yml
+dependencies:
+  marten:
+    path: ./shard_overrides/marten
