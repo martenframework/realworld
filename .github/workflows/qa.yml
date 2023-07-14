@@ -20,7 +20,7 @@ jobs:
       - name: Install shards
         run:
           git submodule init
-          git submodule update
+          git submodule update --remote --recursive
           shards install --ignore-crystal-version
       - name: Run QA checks
         run: make qa_crystal
