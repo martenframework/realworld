@@ -32,7 +32,7 @@
               <a class="nav-link{% if nav_bar_item == 'settings' %} active{% endif %}" href="{% url 'profiles:settings_update' %}"> <i class="ion-gear-a"></i>&nbsp;Settings </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="">
+              <a class="nav-link{% if nav_bar_item == 'profile' %} active{% endif %}" href="{% url 'profiles:profile_detail' username: request.user.profile.username %}">
                 <img src="{{ request.user.profile.image_url|default:'https://static.productionready.io/images/smiley-cyrus.jpg' }}" class="user-pic" alt="User's profile image">
                 {{ request.user.profile.username }}
               </a>
