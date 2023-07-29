@@ -7,7 +7,13 @@ module Profiles
 
     def context
       ctx = super
-      ctx["nav_bar_item"] = "profile" if request.user.try(&.profile) == record
+
+      if request.user.try(&.profile) == record
+        ctx["nav_bar_item"] = "profile"
+      elsif request.user?
+        ctx["following"] = request.user!.profile!.followed_users.exists?(pk: record.pk)
+      end
+
       ctx
     end
   end
