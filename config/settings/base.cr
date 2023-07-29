@@ -38,4 +38,7 @@ Marten.configure do |config|
 
   # Authentication model
   config.auth.user_model = Auth::User
+
+  # Assets settings
+  config.assets.app_dirs = false
 end

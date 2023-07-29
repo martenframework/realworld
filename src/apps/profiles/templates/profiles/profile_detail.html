@@ -1,7 +1,9 @@
 {% extend "base.html" %}
 
+{% block data_controller %}profiles:profile_detail{% endblock data_controller %}
+
 {% block content %}
-<div class="profile-page">
+<div id="profile_page" class="profile-page" data-username="{{ profile.username }}">
   <div class="user-info">
     <div class="container">
       <div class="row">
@@ -12,15 +14,17 @@
           <p>{{ profile.bio }}</p>
           {% endif %}
           {% if request.user? && request.user.profile == profile %}
-          <a class="btn btn-sm btn-outline-secondary action-btn" href="{% url 'profiles:settings_update' %}">
-            <i class="ion-gear-a"></i>
-            &nbsp; Edit profile settings
-          </a>
+            <a class="btn btn-sm btn-outline-secondary action-btn" href="{% url 'profiles:settings_update' %}">
+              <i class="ion-gear-a"></i>
+              &nbsp; Edit profile settings
+            </a>
           {% elsif request.user? %}
-          <button class="btn btn-sm btn-outline-secondary action-btn">
-            <i class="ion-plus-round"></i>
-            &nbsp; Follow {{ profile.username }}
-          </button>
+            <button id="follow_button" class="btn btn-sm btn-outline-secondary action-btn">
+              <i class="ion-plus-round"></i>
+              &nbsp;
+              <span id="follow_text" {% if following %}style="display:none;"{% endif %}>Follow {{ profile.username }}</span>
+              <span id="unfollow_text" {% if not following %}style="display:none;"{% endif %}>Unfollow {{ profile.username }}</span>
+            </button>
           {% endif %}
         </div>
       </div>
