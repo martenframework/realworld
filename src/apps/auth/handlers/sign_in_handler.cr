@@ -10,9 +10,10 @@ module Auth
     success_route_name "blogging:home"
     nav_bar_item :sign_in
 
-    def process_valid_schema
+    after_successful_schema_validation :sign_in_user
+
+    private def sign_in_user
       MartenAuth.sign_in(request, schema.user.not_nil!)
-      redirect(success_url)
     end
   end
 end

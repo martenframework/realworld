@@ -3,11 +3,13 @@ module Profiles
     include Auth::RequireSignedInUser
     include NavBarActiveable
 
-    @schema : SettingsUpdateSchema?
-
+    schema SettingsUpdateSchema
     template_name "profiles/settings_update.html"
     success_route_name "blogging:home"
     nav_bar_item :settings
+
+    before_schema_validation :assign_current_profile_to_schema
+    after_successful_schema_validation :update_user_and_profile
 
     def initial_data
       Marten::Schema::DataHash{
@@ -18,7 +20,11 @@ module Profiles
       }
     end
 
-    def process_valid_schema
+    private def assign_current_profile_to_schema
+      schema.current_profile = request.user!.profile
+    end
+
+    private def update_user_and_profile
       request.user!.transaction do
         request.user!.email = schema.email!
         request.user!.set_password(schema.password!) if schema.password?
@@ -33,14 +39,6 @@ module Profiles
 
       if schema.password?
         MartenAuth.update_session_auth_hash(request, request.user!)
-      end
-
-      super
-    end
-
-    def schema
-      @schema ||= SettingsUpdateSchema.new(request.data, initial_data).tap do |s|
-        s.current_profile = request.user!.profile
       end
     end
   end
