@@ -1,6 +1,7 @@
 module Blogging
   class Article < Marten::Model
     field :id, :big_int, primary_key: true, auto: true
+    field :slug, :slug
     field :title, :string, max_size: 255
     field :description, :text
     field :body, :text
