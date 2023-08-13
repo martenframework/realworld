@@ -13,10 +13,10 @@ export default {
       const csrfToken = getCSRFToken();
       console.log(csrfToken);
       followButton.addEventListener('click', async () => {
-        let response = await axios.post(
+        const response = await axios.post(
           `/@${profilePageDiv.dataset.username}/follow`,
           {},
-          { headers: { 'X-CSRF-Token': csrfToken } }
+          { headers: { 'X-CSRF-Token': csrfToken } },
         );
         if (response.data.following) {
           followText.style.display = 'none';

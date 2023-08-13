@@ -25,25 +25,29 @@ server:
 # The following rules can be used to check code quality and perform sanity checks.
 # --------------------------------------------------------------------------------------------------
 
-.PHONY: qa qa_crystal
+.PHONY: qa qa_crystal qa_js
 ## Trigger all quality assurance checks.
-qa: qa_crystal
+qa: qa_crystal qa_js
 ## Trigger Crystal quality assurance checks.
 qa_crystal: lint_crystal
+## Trigger Javascript quality assurance checks.
+qa_js: lint_js
 
 .PHONY: format_crystal
 ## Perform and apply crystal formatting.
 format_crystal:
 	crystal tool format --exclude docs
 
-.PHONY: lint lint_crystal
+.PHONY: lint lint_crystal lint_js
 ## Trigger code quality checks.
-lint: lint_crystal
+lint: lint_crystal lint_js
 ## Trigger code Crystal quality checks.
 lint_crystal:
 	crystal tool format --exclude docs --check
 	bin/ameba
-
+## Trigger Javascript code quality checks (eslint).
+lint_js:
+	npm run lint
 
 # TESTING
 # ~~~~~~~
