@@ -158,6 +158,7 @@ gulp.task('webpack-dev-server', gulp.series(() => {
         exclude: /node_modules/,
         resolve: {
           extensions: ['.js', '.jsx'],
+          fullySpecified: false,
         },
         use: {
           loader: 'babel-loader',
