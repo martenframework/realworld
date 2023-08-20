@@ -1,0 +1,75 @@
+{% extend "base.html" %}
+
+{% block data_controller %}blogging:article_create_update{% endblock data_controller %}
+
+{% block content %}
+<div class="editor-page">
+  <div class="container page">
+    <div class="row">
+      <div class="col-md-10 offset-md-1 col-xs-12">
+        {% if schema.errors.global %}
+          <div class="error-messages">
+            {% for error in schema.errors.global %}
+            <p>{{ error.message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <form method="post" action="" enctype="multipart/form-data" novalidate>
+          <input type="hidden" name="csrftoken" value="{% csrf_token %}" />
+
+          <fieldset>
+            <fieldset class="form-group">
+              <input
+                class="form-control form-control-lg {% if schema.title.errored? %} is-invalid{% endif %}"
+                type="text"
+                placeholder="Article Title"
+                id="{{ schema.title.id }}"
+                name="{{ schema.title.id }}"
+                value="{{ schema.title.value }}"
+              />
+              {% for error in schema.title.errors %}<div class="invalid-feedback">{{ error.message }}</div>{% endfor %}
+            </fieldset>
+            <fieldset class="form-group">
+              <input
+                class="form-control {% if schema.description.errored? %} is-invalid{% endif %}"
+                type="text"
+                placeholder="What's this article about?"
+                id="{{ schema.description.id }}"
+                name="{{ schema.description.id }}"
+                value="{{ schema.description.value }}"
+              />
+              {% for error in schema.description.errors %}<div class="invalid-feedback">{{ error.message }}</div>{% endfor %}
+            </fieldset>
+            <fieldset class="form-group">
+              <textarea
+                class="form-control {% if schema.body.errored? %} is-invalid{% endif %}"
+                rows="8"
+                placeholder="Write your article (in markdown)"
+                id="{{ schema.body.id }}"
+                name="{{ schema.body.id }}"
+              >{{ schema.body.value }}</textarea>
+              {% for error in schema.body.errors %}<div class="invalid-feedback">{{ error.message }}</div>{% endfor %}
+            </fieldset>
+            <fieldset class="form-group">
+              <input
+                id="tags_real_input"
+                type="hidden"
+                id="{{ schema.tags.id }}"
+                name="{{ schema.tags.id }}"
+                value="{{ schema.tags.value }}"
+              />
+              <input id="tags_fake_input" type="text" class="form-control" placeholder="Enter tags" />
+              <div id="tags_list" class="tag-list">
+              </div>
+              {% for error in schema.tags.errors %}<div class="invalid-feedback">{{ error.message }}</div>{% endfor %}
+            </fieldset>
+            <button class="btn btn-lg pull-xs-right btn-primary">
+              Publish Article
+            </button>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
