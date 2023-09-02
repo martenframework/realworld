@@ -9,5 +9,9 @@ module Blogging
     field :tags, :many_to_many, to: Blogging::Tag
 
     with_timestamp_fields
+
+    def rendered_body
+      Cmark.commonmark_to_html(body!) if body?
+    end
   end
 end

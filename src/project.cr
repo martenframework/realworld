@@ -1,4 +1,5 @@
 # Third party requirements.
+require "cmark"
 require "marten"
 require "marten_auth"
 require "sqlite3"

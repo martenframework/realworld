@@ -5,6 +5,10 @@ shards:
     git: https://github.com/crystal-ameba/ameba.git
     version: 1.4.3+git.commit.a33f98624a30a62cdf03affe32e7469ab2287f9f
 
+  cmark:
+    git: https://github.com/amauryt/cr-cmark-gfm.git
+    version: 0.1.3
+
   db:
     git: https://github.com/crystal-lang/crystal-db.git
     version: 0.12.0
