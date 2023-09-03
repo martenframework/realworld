@@ -22,13 +22,13 @@ describe NavBarActiveable do
 end
 
 module NavBarActiveableSpec
-  class TestWithStringHandler < ::Marten::Handlers::Template
+  class TestWithStringHandler < Marten::Handlers::Template
     include NavBarActiveable
 
     nav_bar_item "home"
   end
 
-  class TestWithSymbolHandler < ::Marten::Handlers::Template
+  class TestWithSymbolHandler < Marten::Handlers::Template
     include NavBarActiveable
 
     nav_bar_item :home
