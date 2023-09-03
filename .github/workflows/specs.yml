@@ -25,11 +25,11 @@ jobs:
         git config --global --add safe.directory /__w/realworld/realworld/shard_overrides/marten
         git submodule init
         git submodule update --remote --recursive
-        shards install --ignore-crystal-version
+        shards install --ignore-crystal-version --skip-postinstall --skip-executables
     - name: Cache Crystal
       uses: actions/cache@v1
       with:
         path: ~/.cache/crystal
         key: ${{ runner.os }}-crystal
     - name: Run tests
-      run: make tests
+      run: crystal spec --error-trace
