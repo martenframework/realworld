@@ -1,11 +1,22 @@
 module Blogging
-  class ArticleCreateSchema < Marten::Schema
+  class ArticleSchema < Marten::Schema
     field :title, :string, min_size: 10, max_size: 255
     field :description, :string, max_size: 500
     field :body, :string, max_size: 100_000
     field :tags, :string, required: false
 
     validate :validate_tags
+
+    def slugified_title : String
+      suffix = "-#{Random::Secure.hex(4)}"
+
+      slug = title!.gsub(/[^\w\s-]/, "").downcase
+      slug = slug.gsub(/[-\s]+/, "-").strip("-_")
+      slug = slug.unicode_normalize(:nfkc)
+      slug = String.new(slug.encode("ascii", :skip))
+
+      slug[...(50 - suffix.size)] + suffix
+    end
 
     def tags_array
       return [] of String if tags.nil? || tags!.empty?

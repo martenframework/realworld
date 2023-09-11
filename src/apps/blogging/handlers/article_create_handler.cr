@@ -3,8 +3,8 @@ module Blogging
     include Auth::RequireSignedInUser
     include NavBarActiveable
 
-    schema ArticleCreateSchema
-    template_name "blogging/article_create.html"
+    schema ArticleSchema
+    template_name "blogging/article_create_update.html"
 
     after_successful_schema_validation :create_article_and_redirect
 
@@ -16,7 +16,7 @@ module Blogging
       Article.transaction do
         article = Article.create!(
           title: schema.title!,
-          slug: slugify(schema.title!),
+          slug: schema.slugified_title,
           description: schema.description!,
           body: schema.body!,
           author: request.user!.profile,
@@ -32,17 +32,6 @@ module Blogging
       end
 
       redirect reverse("blogging:article_detail", slug: article.not_nil!.slug!)
-    end
-
-    private def slugify(title)
-      suffix = "-#{Random::Secure.hex(4)}"
-
-      slug = title.gsub(/[^\w\s-]/, "").downcase
-      slug = slug.gsub(/[-\s]+/, "-").strip("-_")
-      slug = slug.unicode_normalize(:nfkc)
-      slug = String.new(slug.encode("ascii", :skip))
-
-      slug[...(50 - suffix.size)] + suffix
     end
   end
 end

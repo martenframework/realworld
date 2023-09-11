@@ -1,9 +1,38 @@
 require "./spec_helper"
 
-describe Blogging::ArticleCreateSchema do
+describe Blogging::ArticleSchema do
+  describe "#slugified_title" do
+    it "returns a slugified version of the title" do
+      schema = Blogging::ArticleSchema.new(
+        Marten::Schema::DataHash{
+          "title"       => "My article",
+          "description" => "My super article",
+          "body"        => "My super article body",
+        }
+      )
+
+      schema.valid?
+
+      schema.slugified_title.starts_with?("my-article-").should be_true
+    end
+
+    it "raises NilAssertionError if no title is specified" do
+      schema = Blogging::ArticleSchema.new(
+        Marten::Schema::DataHash{
+          "description" => "My super article",
+          "body"        => "My super article body",
+        }
+      )
+
+      expect_raises(NilAssertionError) do
+        schema.slugified_title
+      end
+    end
+  end
+
   describe "#tags_array" do
     it "returns an empty array if no tags are specified" do
-      schema = Blogging::ArticleCreateSchema.new(
+      schema = Blogging::ArticleSchema.new(
         Marten::Schema::DataHash{
           "title"       => "My article",
           "description" => "My super article",
@@ -17,7 +46,7 @@ describe Blogging::ArticleCreateSchema do
     end
 
     it "returns the stripped tags" do
-      schema = Blogging::ArticleCreateSchema.new(
+      schema = Blogging::ArticleSchema.new(
         Marten::Schema::DataHash{
           "title"       => "My article",
           "description" => "My super article",
@@ -32,7 +61,7 @@ describe Blogging::ArticleCreateSchema do
     end
 
     it "returns unique tags" do
-      schema = Blogging::ArticleCreateSchema.new(
+      schema = Blogging::ArticleSchema.new(
         Marten::Schema::DataHash{
           "title"       => "My article",
           "description" => "My super article",
@@ -49,7 +78,7 @@ describe Blogging::ArticleCreateSchema do
 
   describe "#valid?" do
     it "validates an article without tags" do
-      schema = Blogging::ArticleCreateSchema.new(
+      schema = Blogging::ArticleSchema.new(
         Marten::Schema::DataHash{
           "title"       => "My article",
           "description" => "My super article",
@@ -61,7 +90,7 @@ describe Blogging::ArticleCreateSchema do
     end
 
     it "validates an article without tags when the tags field is nil" do
-      schema = Blogging::ArticleCreateSchema.new(
+      schema = Blogging::ArticleSchema.new(
         Marten::Schema::DataHash{
           "title"       => "My article",
           "description" => "My super article",
@@ -74,7 +103,7 @@ describe Blogging::ArticleCreateSchema do
     end
 
     it "validates an article without tags when tags field is empty" do
-      schema = Blogging::ArticleCreateSchema.new(
+      schema = Blogging::ArticleSchema.new(
         Marten::Schema::DataHash{
           "title"       => "My article",
           "description" => "My super article",
@@ -87,7 +116,7 @@ describe Blogging::ArticleCreateSchema do
     end
 
     it "validates an article with tags" do
-      schema = Blogging::ArticleCreateSchema.new(
+      schema = Blogging::ArticleSchema.new(
         Marten::Schema::DataHash{
           "title"       => "My article",
           "description" => "My super article",
@@ -100,7 +129,7 @@ describe Blogging::ArticleCreateSchema do
     end
 
     it "does not validate an article with too many tags" do
-      schema = Blogging::ArticleCreateSchema.new(
+      schema = Blogging::ArticleSchema.new(
         Marten::Schema::DataHash{
           "title"       => "My article",
           "description" => "My super article",
@@ -116,7 +145,7 @@ describe Blogging::ArticleCreateSchema do
     end
 
     it "does not validate an article with invalid tag values" do
-      schema = Blogging::ArticleCreateSchema.new(
+      schema = Blogging::ArticleSchema.new(
         Marten::Schema::DataHash{
           "title"       => "My article",
           "description" => "My super article",
