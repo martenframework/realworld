@@ -29,9 +29,12 @@
         <a href="{% url 'blogging:article_update' slug: article.slug %}" class="btn btn-sm btn-outline-secondary">
           <i class="ion-edit"></i> Edit Article
         </a>
-        <button class="btn btn-sm btn-outline-danger">
-          <i class="ion-trash-a"></i> Delete Article
-        </button>
+        <form method="post" action="{% url 'blogging:article_delete' slug: article.slug %}" enctype="multipart/form-data" style="display:inline;" novalidate>
+          <input type="hidden" name="csrftoken" value="{% csrf_token %}" />
+          <button type="submit" class="btn btn-sm btn-outline-danger">
+            <i class="ion-trash-a"></i> Delete Article
+          </button>
+        </form>
         {% endif %}
       </div>
     </div>
@@ -70,9 +73,12 @@
         <a href="{% url 'blogging:article_update' slug: article.slug %}" class="btn btn-sm btn-outline-secondary">
           <i class="ion-edit"></i> Edit Article
         </a>
-        <button class="btn btn-sm btn-outline-danger">
-          <i class="ion-trash-a"></i> Delete Article
-        </button>
+        <form method="post" action="{% url 'blogging:article_delete' slug: article.slug %}" enctype="multipart/form-data" style="display:inline;" novalidate>
+          <input type="hidden" name="csrftoken" value="{% csrf_token %}" />
+          <button type="submit" class="btn btn-sm btn-outline-danger">
+            <i class="ion-trash-a"></i> Delete Article
+          </button>
+        </form>
         {% endif %}
       </div>
     </div>
