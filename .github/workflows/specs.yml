@@ -25,6 +25,6 @@ jobs:
         git config --global --add safe.directory /__w/realworld/realworld/shard_overrides/marten
         git submodule init
         git submodule update --remote --recursive
-        shards install --ignore-crystal-version --skip-postinstall --skip-executables
+        shards install --ignore-crystal-version
     - name: Run tests
       run: crystal spec --error-trace
