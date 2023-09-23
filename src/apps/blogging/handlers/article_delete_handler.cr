@@ -13,7 +13,7 @@ module Blogging
     end
 
     private def article : Blogging::Article
-      @article ||= Article.get!(slug: params["slug"])
+      @article ||= Article.get!(slug: params[:slug])
     end
 
     private def require_signed_in_author

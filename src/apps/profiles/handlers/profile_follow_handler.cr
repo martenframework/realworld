@@ -5,7 +5,7 @@ module Profiles
     http_method_names :post
 
     def post
-      profile = Profile.get!(username: params["username"]?)
+      profile = Profile.get!(username: params[:username]?)
       return head 400 if request.user!.profile == profile
 
       if request.user!.profile!.followed_users.exists?(pk: profile.pk)

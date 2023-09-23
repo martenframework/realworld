@@ -11,7 +11,7 @@ describe Profiles::ProfileDetailHandler do
 
       handler = Profiles::ProfileDetailHandler.new(
         request,
-        Hash(String, Marten::Routing::Parameter::Types){"username" => user.profile!.username!}
+        Marten::Routing::MatchParameters{"username" => user.profile!.username!}
       )
 
       handler.context["nav_bar_item"].should eq "profile"
@@ -27,7 +27,7 @@ describe Profiles::ProfileDetailHandler do
 
       handler = Profiles::ProfileDetailHandler.new(
         request,
-        Hash(String, Marten::Routing::Parameter::Types){"username" => user_2.profile!.username!}
+        Marten::Routing::MatchParameters{"username" => user_2.profile!.username!}
       )
 
       handler.context["nav_bar_item"]?.should be_nil
@@ -38,7 +38,7 @@ describe Profiles::ProfileDetailHandler do
 
       handler = Profiles::ProfileDetailHandler.new(
         Marten::HTTP::Request.new(method: "GET", resource: "/test/xyz"),
-        Hash(String, Marten::Routing::Parameter::Types){"username" => user.profile!.username!}
+        Marten::Routing::MatchParameters{"username" => user.profile!.username!}
       )
 
       handler.context["nav_bar_item"]?.should be_nil
@@ -56,7 +56,7 @@ describe Profiles::ProfileDetailHandler do
 
       handler = Profiles::ProfileDetailHandler.new(
         request,
-        Hash(String, Marten::Routing::Parameter::Types){"username" => user_2.profile!.username!}
+        Marten::Routing::MatchParameters{"username" => user_2.profile!.username!}
       )
 
       handler.context["following"]?.should be_true
@@ -72,7 +72,7 @@ describe Profiles::ProfileDetailHandler do
 
       handler = Profiles::ProfileDetailHandler.new(
         request,
-        Hash(String, Marten::Routing::Parameter::Types){"username" => user_2.profile!.username!}
+        Marten::Routing::MatchParameters{"username" => user_2.profile!.username!}
       )
 
       handler.context["following"]?.should be_false

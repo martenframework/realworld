@@ -11,7 +11,7 @@ module Blogging
     after_successful_schema_validation :update_article_and_redirect
 
     private def article : Blogging::Article
-      @article ||= Article.get!(slug: params["slug"])
+      @article ||= Article.get!(slug: params[:slug])
     end
 
     private def initial_data
