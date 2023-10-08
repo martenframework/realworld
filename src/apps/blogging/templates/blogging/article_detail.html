@@ -11,7 +11,7 @@
           <img src="{{ article.author.image_url|default:'https://static.productionready.io/images/smiley-cyrus.jpg' }}" />
         </a>
         <div class="info">
-          <a href="/profile/eric-simons" class="author">{{ article.author.username }}</a>
+          <a href="{% url 'profiles:profile_detail' username: article.author.username %}" class="author">{{ article.author.username }}</a>
           <span class="date">{{ article.created_at | time: "%B %-d" }}</span>
         </div>
         {% if request.user? && request.user.profile != article.author %}
