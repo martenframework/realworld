@@ -5,7 +5,7 @@ module Blogging
     field :title, :string, max_size: 255
     field :description, :text
     field :body, :text
-    field :author, :many_to_one, to: Profiles::Profile
+    field :author, :many_to_one, to: Profiles::Profile, related: :articles
     field :tags, :many_to_many, to: Blogging::Tag
 
     with_timestamp_fields
