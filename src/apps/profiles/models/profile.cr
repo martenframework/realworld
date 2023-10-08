@@ -6,6 +6,6 @@ module Profiles
     field :bio, :text, blank: true, null: true
     field :image_url, :url, blank: true, null: true
     field :followed_users, :many_to_many, to: self
-    field :favorite_articles, :many_to_many, to: Blogging::Article
+    field :favorite_articles, :many_to_many, to: Blogging::Article, related: :favorited_by
   end
 end
