@@ -1,0 +1,24 @@
+{% for article in articles %}
+{% include "blogging/partials/article_preview.html" with article = article %}
+{% else %}
+<div class="article-preview">No articles are here... yet.</div>
+{% endfor %}
+
+{% if articles.size > 0 %}
+{% if articles.previous_page? || articles.next_page? %}
+<nav>
+  <ul class="pagination">
+    {% if articles.previous_page? %}
+    <li class="page-item"><a class="page-link" href="?page={{ articles.previous_page_number }}{{ additional_page_params }}" tabindex="-1">Previous</a></li>
+    {% else %}
+    <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
+    {% endif %}
+    {% if articles.next_page? %}
+    <li class="page-item"><a class="page-link" href="?page={{ articles.next_page_number }}{{ additional_page_params }}" tabindex="+1">Next</a></li>
+    {% else %}
+    <li class="page-item disabled"><a class="page-link" href="#" tabindex="+1">Next</a></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
+{% endif %}
