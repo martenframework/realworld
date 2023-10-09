@@ -77,6 +77,190 @@ describe Profiles::ProfileDetailHandler do
 
       handler.context["following"]?.should be_false
     end
+
+    it "inserts the first page of authored articles when no articles query parameter is specified" do
+      user = create_user(username: "test1", email: "test1@example.com", password: "insecure")
+      other_user = create_user(username: "test2", email: "test2@example.com", password: "insecure")
+
+      15.times do |i|
+        Blogging::Article.create!(
+          title: "Article #{i}",
+          slug: "article-#{i}",
+          description: "My article description",
+          body: "# Hello World",
+          author: user.profile!,
+        )
+
+        Blogging::Article.create!(
+          title: "Other article #{i}",
+          slug: "other-article-#{i}",
+          description: "My article description",
+          body: "# Hello World",
+          author: other_user.profile!,
+        )
+      end
+
+      handler = Profiles::ProfileDetailHandler.new(
+        Marten::HTTP::Request.new(method: "GET", resource: "/test/xyz"),
+        Marten::Routing::MatchParameters{"username" => user.profile!.username!}
+      )
+
+      handler.context["current_tab"].should eq "authored_articles"
+
+      page = handler.context["articles"].raw.as(Marten::DB::Query::Page(Blogging::Article))
+      page.size.should eq 10
+      page.each do |article|
+        article.author.should eq user.profile!
+      end
+    end
+
+    it "inserts the right page when the articles query parameter is set to autored and no page is set" do
+      user = create_user(username: "test1", email: "test1@example.com", password: "insecure")
+      other_user = create_user(username: "test2", email: "test2@example.com", password: "insecure")
+
+      15.times do |i|
+        Timecop.freeze(i.days.ago) do
+          Blogging::Article.create!(
+            title: "Article #{i}",
+            slug: "article-#{i}",
+            description: "My article description",
+            body: "# Hello World",
+            author: user.profile!,
+          )
+
+          Blogging::Article.create!(
+            title: "Other article #{i}",
+            slug: "other-article-#{i}",
+            description: "My article description",
+            body: "# Hello World",
+            author: other_user.profile!,
+          )
+        end
+      end
+
+      handler = Profiles::ProfileDetailHandler.new(
+        Marten::HTTP::Request.new(method: "GET", resource: "/test/xyz?articles=authored"),
+        Marten::Routing::MatchParameters{"username" => user.profile!.username!}
+      )
+
+      handler.context["current_tab"].should eq "authored_articles"
+
+      page = handler.context["articles"].raw.as(Marten::DB::Query::Page(Blogging::Article))
+      page.size.should eq 10
+      page.map(&.title).should eq (0..9).map { |i| "Article #{i}" }
+    end
+
+    it "inserts the right page when the articles query parameter is set to authored and a page is set" do
+      user = create_user(username: "test1", email: "test1@example.com", password: "insecure")
+      other_user = create_user(username: "test2", email: "test2@example.com", password: "insecure")
+
+      15.times do |i|
+        Timecop.freeze(i.days.ago) do
+          Blogging::Article.create!(
+            title: "Article #{i}",
+            slug: "article-#{i}",
+            description: "My article description",
+            body: "# Hello World",
+            author: user.profile!,
+          )
+
+          Blogging::Article.create!(
+            title: "Other article #{i}",
+            slug: "other-article-#{i}",
+            description: "My article description",
+            body: "# Hello World",
+            author: other_user.profile!,
+          )
+        end
+      end
+
+      handler = Profiles::ProfileDetailHandler.new(
+        Marten::HTTP::Request.new(method: "GET", resource: "/test/xyz?articles=authored&page=2"),
+        Marten::Routing::MatchParameters{"username" => user.profile!.username!}
+      )
+
+      handler.context["current_tab"].should eq "authored_articles"
+
+      page = handler.context["articles"].raw.as(Marten::DB::Query::Page(Blogging::Article))
+      page.size.should eq 5
+      page.map(&.title).should eq (10..14).map { |i| "Article #{i}" }
+    end
+
+    it "inserts the right page when the articles query parameter is set to faborited and no page is set" do
+      user = create_user(username: "test1", email: "test1@example.com", password: "insecure")
+      other_user = create_user(username: "test2", email: "test2@example.com", password: "insecure")
+
+      15.times do |i|
+        Timecop.freeze(i.days.ago) do
+          Blogging::Article.create!(
+            title: "Article #{i}",
+            slug: "article-#{i}",
+            description: "My article description",
+            body: "# Hello World",
+            author: user.profile!,
+          )
+
+          other_article = Blogging::Article.create!(
+            title: "Other article #{i}",
+            slug: "other-article-#{i}",
+            description: "My article description",
+            body: "# Hello World",
+            author: other_user.profile!,
+          )
+
+          user.profile!.favorite_articles.add(other_article)
+        end
+      end
+
+      handler = Profiles::ProfileDetailHandler.new(
+        Marten::HTTP::Request.new(method: "GET", resource: "/test/xyz?articles=favorited"),
+        Marten::Routing::MatchParameters{"username" => user.profile!.username!}
+      )
+
+      handler.context["current_tab"].should eq "favorited_articles"
+
+      page = handler.context["articles"].raw.as(Marten::DB::Query::Page(Blogging::Article))
+      page.size.should eq 10
+      page.map(&.title).should eq (0..9).map { |i| "Other article #{i}" }
+    end
+
+    it "inserts the right page when the articles query parameter is set to faborited and a page is set" do
+      user = create_user(username: "test1", email: "test1@example.com", password: "insecure")
+      other_user = create_user(username: "test2", email: "test2@example.com", password: "insecure")
+
+      15.times do |i|
+        Timecop.freeze(i.days.ago) do
+          Blogging::Article.create!(
+            title: "Article #{i}",
+            slug: "article-#{i}",
+            description: "My article description",
+            body: "# Hello World",
+            author: user.profile!,
+          )
+
+          other_article = Blogging::Article.create!(
+            title: "Other article #{i}",
+            slug: "other-article-#{i}",
+            description: "My article description",
+            body: "# Hello World",
+            author: other_user.profile!,
+          )
+
+          user.profile!.favorite_articles.add(other_article)
+        end
+      end
+
+      handler = Profiles::ProfileDetailHandler.new(
+        Marten::HTTP::Request.new(method: "GET", resource: "/test/xyz?articles=favorited&page=2"),
+        Marten::Routing::MatchParameters{"username" => user.profile!.username!}
+      )
+
+      handler.context["current_tab"].should eq "favorited_articles"
+
+      page = handler.context["articles"].raw.as(Marten::DB::Query::Page(Blogging::Article))
+      page.size.should eq 5
+      page.map(&.title).should eq (10..14).map { |i| "Other article #{i}" }
+    end
   end
 
   describe "#dispatch" do

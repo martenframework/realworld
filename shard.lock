@@ -33,3 +33,7 @@ shards:
     git: https://github.com/crystal-lang/crystal-sqlite3.git
     version: 0.20.0
 
+  timecop:
+    git: https://github.com/crystal-community/timecop.cr.git
+    version: 0.5.0
+
