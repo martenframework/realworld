@@ -19,11 +19,11 @@
               &nbsp; Edit profile settings
             </a>
           {% elsif request.user? %}
-            <button id="follow_button" class="btn btn-sm btn-outline-secondary action-btn">
+            <button class="follow-button btn btn-sm btn-outline-secondary action-btn">
               <i class="ion-plus-round"></i>
               &nbsp;
-              <span id="follow_text" {% if following %}style="display:none;"{% endif %}>Follow {{ profile.username }}</span>
-              <span id="unfollow_text" {% if not following %}style="display:none;"{% endif %}>Unfollow {{ profile.username }}</span>
+              <span class="follow-text" {% if following %}style="display:none;"{% endif %}>Follow {{ profile.username }}</span>
+              <span class="unfollow-text" {% if not following %}style="display:none;"{% endif %}>Unfollow {{ profile.username }}</span>
             </button>
           {% endif %}
         </div>

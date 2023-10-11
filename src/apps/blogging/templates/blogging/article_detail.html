@@ -1,7 +1,9 @@
 {% extend "base.html" %}
 
+{% block data_controller %}blogging:article_detail{% endblock data_controller %}
+
 {% block content %}
-<div class="article-page">
+<div id="article_page" class="article-page" data-author-username="{{ article.author.username }}">
   <div class="banner">
     <div class="container">
       <h1>{{ article.title }}</h1>
@@ -15,9 +17,11 @@
           <span class="date">{{ article.created_at | time: "%B %-d" }}</span>
         </div>
         {% if request.user? && request.user.profile != article.author %}
-        <button class="btn btn-sm btn-outline-secondary">
+        <button class="follow-button btn btn-sm btn-outline-secondary">
           <i class="ion-plus-round"></i>
-          &nbsp; Follow {{ article.author.username }} <span class="counter">(10)</span>
+          &nbsp;
+          <span class="follow-text" {% if following %}style="display:none;"{% endif %}>Follow {{ article.author.username }}</span>
+          <span class="unfollow-text" {% if not following %}style="display:none;"{% endif %}>Unfollow {{ article.author.username }}</span>
         </button>
         &nbsp;&nbsp;
         {% endif %}
@@ -55,15 +59,17 @@
           <img src="{{ article.author.image_url|default:'https://static.productionready.io/images/smiley-cyrus.jpg' }}" />
         </a>
         <div class="info">
-          <a href="/profile/eric-simons" class="author">{{ article.author.username }}</a>
+          <a href="{% url 'profiles:profile_detail' username: article.author.username %}" class="author">{{ article.author.username }}</a>
           <span class="date">{{ article.created_at | time: "%B %-d" }}</span>
         </div>
         {% if request.user? && request.user.profile != article.author %}
-        <button class="btn btn-sm btn-outline-secondary">
+        <button class="follow-button btn btn-sm btn-outline-secondary">
           <i class="ion-plus-round"></i>
-          &nbsp; Follow Eric Simons
+          &nbsp;
+          <span class="follow-text" {% if following %}style="display:none;"{% endif %}>Follow {{ article.author.username }}</span>
+          <span class="unfollow-text" {% if not following %}style="display:none;"{% endif %}>Unfollow {{ article.author.username }}</span>
         </button>
-        &nbsp;
+        &nbsp;&nbsp;
         {% endif %}
         <button class="btn btn-sm btn-outline-primary">
           <i class="ion-heart"></i>
