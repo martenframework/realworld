@@ -1,8 +1,8 @@
-import initFollowButton from '../../core/initFollowButton';
+import initFollowButtons from '../../core/initFollowButtons';
 
 export default {
   async init() {
     const articlePageDiv = document.getElementById('article_page');
-    await initFollowButton(articlePageDiv.dataset.authorUsername);
+    await initFollowButtons(articlePageDiv.dataset.authorUsername);
   },
 };

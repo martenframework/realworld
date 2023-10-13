@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import getCSRFToken from './getCSRFToken';
 
-export default async function initFollowButton(username) {
+export default async function initFollowButtons(username) {
   const followButtons = document.querySelectorAll('.follow-button');
   const followTexts = document.querySelectorAll('.follow-text');
   const unfollowTexts = document.querySelectorAll('.unfollow-text');
