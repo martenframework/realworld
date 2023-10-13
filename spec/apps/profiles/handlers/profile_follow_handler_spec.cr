@@ -49,7 +49,6 @@ describe Profiles::ProfileFollowHandler do
       JSON.parse(response.content).should eq({"following" => false})
 
       user.profile!.followed_users.includes?(targetted_user.profile!).should be_false
-      # user.profile!.followed_users.filter(pk: targetted_user.profile!.pk).exists?.should be_false
     end
   end
 end
