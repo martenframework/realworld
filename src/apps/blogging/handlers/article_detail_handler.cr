@@ -12,6 +12,10 @@ module Blogging
         ctx[:following] = request.user!.profile!.followed_users.exists?(pk: record.author_id)
       end
 
+      if request.user?
+        ctx[:favorited] = request.user!.profile!.favorite_articles.exists?(pk: record.pk)
+      end
+
       ctx
     end
   end

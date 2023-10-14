@@ -51,5 +51,55 @@ describe Blogging::ArticleDetailHandler do
 
       handler.context["following"].should be_false
     end
+
+    it "inserts a boolean indicating that the current user has favorited the considered article" do
+      user = create_user(username: "test1", email: "test1@example.com", password: "insecure")
+      other_user = create_user(username: "test2", email: "test2@example.com", password: "insecure")
+
+      article = Blogging::Article.create!(
+        title: "My article",
+        slug: "my-article",
+        description: "My article description",
+        body: "# Hello World",
+        author: other_user.profile!,
+      )
+
+      user.profile!.favorite_articles.add(article)
+
+      request = Marten::HTTP::Request.new(method: "GET", resource: "/test/xyz")
+      request.session = Marten::HTTP::Session::Store::Cookie.new("sessionkey")
+      MartenAuth.sign_in(request, user)
+
+      handler = Blogging::ArticleDetailHandler.new(
+        request,
+        Marten::Routing::MatchParameters{"slug" => article.slug!}
+      )
+
+      handler.context["favorited"].should be_true
+    end
+
+    it "inserts a boolean indicating that the current user has not favorited the considered article" do
+      user = create_user(username: "test1", email: "test1@example.com", password: "insecure")
+      other_user = create_user(username: "test2", email: "test2@example.com", password: "insecure")
+
+      article = Blogging::Article.create!(
+        title: "My article",
+        slug: "my-article",
+        description: "My article description",
+        body: "# Hello World",
+        author: other_user.profile!,
+      )
+
+      request = Marten::HTTP::Request.new(method: "GET", resource: "/test/xyz")
+      request.session = Marten::HTTP::Session::Store::Cookie.new("sessionkey")
+      MartenAuth.sign_in(request, user)
+
+      handler = Blogging::ArticleDetailHandler.new(
+        request,
+        Marten::Routing::MatchParameters{"slug" => article.slug!}
+      )
+
+      handler.context["favorited"].should be_false
+    end
   end
 end
