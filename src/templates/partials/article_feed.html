@@ -1,5 +1,5 @@
 {% for article in articles %}
-{% include "blogging/partials/article_preview.html" with article = article %}
+{% include "partials/article_preview.html" with article = article %}
 {% else %}
 <div class="article-preview">No articles are here... yet.</div>
 {% endfor %}

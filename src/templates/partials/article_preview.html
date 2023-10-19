@@ -6,8 +6,8 @@
       <span class="date">{{ article.created_at | time: "%B %-d" }}</span>
     </div>
     {% if request.user? %}
-    <button class="favorite-article-btn btn btn-sm pull-xs-right {% if article in request.user.profile.favorite_articles %}btn-primary favorited{% else %}btn-outline-primary{% endif %}">
-      <i class="ion-heart"></i> <span class="favorite-count">{{ article.favorited_by.size }}</span>
+    <button class="favorite-button favorite-article-btn btn btn-sm pull-xs-right {% if article in request.user.profile.favorite_articles %}btn-primary favorited{% else %}btn-outline-primary{% endif %}" data-article-slug="{{ article.slug }}">
+      <i class="ion-heart"></i> <span class="counter">{{ article.favorited_by.size }}</span>
     </button>
     {% endif %}
   </div>
