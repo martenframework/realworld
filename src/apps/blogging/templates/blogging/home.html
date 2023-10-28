@@ -1,5 +1,7 @@
 {% extend "base.html" %}
 
+{% block data_controller %}blogging:home{% endblock data_controller %}
+
 {% block content %}
 <div class="home-page">
   <div class="banner">
@@ -14,50 +16,24 @@
       <div class="col-md-9">
         <div class="feed-toggle">
           <ul class="nav nav-pills outline-active">
+            {% if following_users %}
             <li class="nav-item">
-              <a class="nav-link disabled" href="">Your Feed</a>
+              <a class="nav-link{% if current_tab == 'user' %} active{% endif %}" href="?articles=user">Your Feed</a>
             </li>
+            {% endif %}
             <li class="nav-item">
-              <a class="nav-link active" href="">Global Feed</a>
+              <a class="nav-link{% if current_tab == 'global' %} active{% endif %}" href="?articles=global">Global Feed</a>
             </li>
           </ul>
         </div>
 
-        <div class="article-preview">
-          <div class="article-meta">
-            <a href="profile.html"><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
-            <div class="info">
-              <a href="" class="author">Eric Simons</a>
-              <span class="date">January 20th</span>
-            </div>
-            <button class="btn btn-outline-primary btn-sm pull-xs-right">
-              <i class="ion-heart"></i> 29
-            </button>
-          </div>
-          <a href="" class="preview-link">
-            <h1>How to build webapps that scale</h1>
-            <p>This is the description for the post.</p>
-            <span>Read more...</span>
-          </a>
-        </div>
+        {% if current_tab == 'user' %}
+          {% assign articles_query_param = "&articles=user" %}
+        {% elsif current_tab == 'global' %}
+          {% assign articles_query_param = "&articles=global" %}
+        {% endif %}
 
-        <div class="article-preview">
-          <div class="article-meta">
-            <a href="profile.html"><img src="http://i.imgur.com/N4VcUeJ.jpg" /></a>
-            <div class="info">
-              <a href="" class="author">Albert Pai</a>
-              <span class="date">January 20th</span>
-            </div>
-            <button class="btn btn-outline-primary btn-sm pull-xs-right">
-              <i class="ion-heart"></i> 32
-            </button>
-          </div>
-          <a href="" class="preview-link">
-            <h1>The song you won't ever stop singing. No matter how hard you try.</h1>
-            <p>This is the description for the post.</p>
-            <span>Read more...</span>
-          </a>
-        </div>
+        {% include "partials/article_feed.html" with additional_page_params = articles_query_param %}
       </div>
 
       <div class="col-md-3">
