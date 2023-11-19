@@ -16,7 +16,23 @@ module Blogging
         ctx[:favorited] = request.user!.profile!.favorite_articles.exists?(pk: record.pk)
       end
 
+      ctx[:comments] = paginated_comments
+
       ctx
+    end
+
+    private COMMENT_PAGE_PARAM = "comment_page"
+    private COMMENT_PAGE_SIZE  = 10
+
+    private def comment_page_number
+      request.query_params[COMMENT_PAGE_PARAM]?.try(&.to_i) || 1
+    rescue ArgumentError
+      1
+    end
+
+    private def paginated_comments
+      paginator = record.comments.order("-created_at").paginator(COMMENT_PAGE_SIZE)
+      paginator.page(comment_page_number)
     end
   end
 end

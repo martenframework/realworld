@@ -91,50 +91,61 @@
 
     <div class="row">
       <div class="col-xs-12 col-md-8 offset-md-2">
-        <form class="card comment-form">
+        {% if request.user? %}
+        <form method="post" action="{% url 'blogging:comment_create' slug: article.slug %}" class="card comment-form">
+          <input type="hidden" name="csrftoken" value="{% csrf_token %}" />
           <div class="card-block">
-            <textarea class="form-control" placeholder="Write a comment..." rows="3"></textarea>
+            <textarea class="form-control" placeholder="Write a comment..." rows="3" name="body" required></textarea>
           </div>
           <div class="card-footer">
-            <img src="http://i.imgur.com/Qr71crq.jpg" class="comment-author-img" />
+            <img src="{{ request.user.profile.image_url|default:'https://static.productionready.io/images/smiley-cyrus.jpg' }}" class="comment-author-img" />
             <button class="btn btn-sm btn-primary">Post Comment</button>
           </div>
         </form>
+        {% endif %}
 
+        {% for comment in comments %}
         <div class="card">
           <div class="card-block">
             <p class="card-text">
-              With supporting text below as a natural lead-in to additional content.
+              {{ comment.rendered_body | safe }}
             </p>
           </div>
           <div class="card-footer">
-            <a href="/profile/author" class="comment-author">
-              <img src="http://i.imgur.com/Qr71crq.jpg" class="comment-author-img" />
+            <a href="{% url 'profiles:profile_detail' username: comment.author.username %}" class="comment-author">
+              <img src="{{ comment.author.image_url|default:'https://static.productionready.io/images/smiley-cyrus.jpg' }}" class="comment-author-img" />
             </a>
             &nbsp;
-            <a href="/profile/jacob-schmidt" class="comment-author">Jacob Schmidt</a>
-            <span class="date-posted">Dec 29th</span>
+            <a href="{% url 'profiles:profile_detail' username: comment.author.username %}" class="comment-author">{{ comment.author.username }}</a>
+            <span class="date-posted">{{ article.created_at | time: "%B %-d" }}</span>
+            {% if request.user? && request.user.profile == comment.author %}
+            <form method="post" action="{% url 'blogging:comment_delete' slug: article.slug, comment_id: comment.id %}" novalidate>
+              <input type="hidden" name="csrftoken" value="{% csrf_token %}" />
+              <span class="mod-options">
+                <button type="submit" class="btn btn-link" style="padding: 0;"><i class="ion-trash-a"></i></button>
+              </span>
+            </form>
+            {% endif %}
           </div>
         </div>
+        {% endfor %}
 
-        <div class="card">
-          <div class="card-block">
-            <p class="card-text">
-              With supporting text below as a natural lead-in to additional content.
-            </p>
-          </div>
-          <div class="card-footer">
-            <a href="/profile/author" class="comment-author">
-              <img src="http://i.imgur.com/Qr71crq.jpg" class="comment-author-img" />
-            </a>
-            &nbsp;
-            <a href="/profile/jacob-schmidt" class="comment-author">Jacob Schmidt</a>
-            <span class="date-posted">Dec 29th</span>
-            <span class="mod-options">
-              <i class="ion-trash-a"></i>
-            </span>
-          </div>
-        </div>
+        {% if comments.previous_page? || comments.next_page? %}
+        <nav>
+          <ul class="pagination">
+            {% if comments.previous_page? %}
+            <li class="page-item"><a class="page-link" href="?comment_page={{ comments.previous_page_number }}{{ additional_page_params }}" tabindex="-1">Previous</a></li>
+            {% else %}
+            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
+            {% endif %}
+            {% if comments.next_page? %}
+            <li class="page-item"><a class="page-link" href="?comment_page={{ comments.next_page_number }}{{ additional_page_params }}" tabindex="+1">Next</a></li>
+            {% else %}
+            <li class="page-item disabled"><a class="page-link" href="#" tabindex="+1">Next</a></li>
+            {% endif %}
+          </ul>
+        </nav>
+        {% endif %}
       </div>
     </div>
   </div>
