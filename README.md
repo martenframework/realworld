@@ -1,10 +1,10 @@
 # ![RealWorld Example App](logo.png)
 
+[![CI](https://github.com/martenframework/realworld/workflows/Specs/badge.svg)](https://github.com/martenframework/realworld/actions) [![CI](https://github.com/martenframework/realworld/workflows/QA/badge.svg)](https://github.com/martenframework/realworld/actions)
+
 > ### [Marten](https://github.com/martenframework/marten) codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld) spec and API.
 
 ### [Demo](https://demo.realworld.io/)&nbsp;&nbsp;&nbsp;&nbsp;[RealWorld](https://github.com/gothinkster/realworld)
-
-[![CI](https://github.com/martenframework/realworld/workflows/Specs/badge.svg)](https://github.com/martenframework/realworld/actions) [![CI](https://github.com/martenframework/realworld/workflows/QA/badge.svg)](https://github.com/martenframework/realworld/actions)
 
 This codebase was created to demonstrate a fully fledged fullstack application built with the **[Marten web framework](https://github.com/martenframework/marten)** including CRUD operations, authentication, routing, pagination, and more.
 
