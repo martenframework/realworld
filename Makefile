@@ -3,6 +3,19 @@ init:
 
 	shards install
 
+	@printf "\n\n${YELLOW}---------------- Initialization ---${RESET} ${GREEN}Node.js dependencies${RESET}\n\n"
+
+	npm install
+
+	@printf "\n\n${YELLOW}---------------- Initialization ---${RESET} ${GREEN}Initial assets build${RESET}\n\n"
+
+	npm run gulp -- build
+
+
+	@printf "\n\n${YELLOW}---------------- Initialization ---${RESET} ${GREEN}Database${RESET}\n\n"
+
+	marten migrate
+
 	@printf "\n\n${YELLOW}---------------- Done.${RESET}\n\n"
 
 
