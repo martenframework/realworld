@@ -2,28 +2,34 @@ module Blogging
   class HomeHandler < Marten::Handlers::Template
     include NavBarActiveable
 
+    @following_users : Bool?
+
     nav_bar_item :home
     template_name "blogging/home.html"
 
-    def context
-      ctx = super
-
-      following_users = request.user? && request.user!.profile!.followed_users.exists?
-      ctx[:following_users] = following_users
-
-      if request.query_params.fetch(:articles, "user") == "user" && following_users
-        ctx[:current_tab] = "user"
-        ctx[:articles] = paginated_user_feed_articles
-      else
-        ctx[:current_tab] = "global"
-        ctx[:articles] = paginated_global_feed_articles
-      end
-
-      ctx
-    end
+    before_render :add_user_data_to_context
+    before_render :add_articles_to_context
 
     private PAGE_PARAM = "page"
     private PAGE_SIZE  = 10
+
+    private def add_articles_to_context
+      if request.query_params.fetch(:articles, "user") == "user" && following_users?
+        context[:current_tab] = "user"
+        context[:articles] = paginated_user_feed_articles
+      else
+        context[:current_tab] = "global"
+        context[:articles] = paginated_global_feed_articles
+      end
+    end
+
+    private def add_user_data_to_context
+      context[:following_users] = following_users?
+    end
+
+    private def following_users?
+      @following_users ||= request.user? && request.user!.profile!.followed_users.exists?
+    end
 
     private def page_number
       request.query_params[PAGE_PARAM]?.try(&.to_i) || 1

@@ -1,8 +1,8 @@
 require "./spec_helper"
 
 describe Blogging::ArticleDetailHandler do
-  describe "#context" do
-    it "inserts a boolean indicating that the current user follows the author of the article" do
+  describe "#render_to_response" do
+    it "inserts a boolean indicating that the current user follows the author of the article in the context" do
       user = create_user(username: "test1", email: "test1@example.com", password: "insecure")
       other_user = create_user(username: "test2", email: "test2@example.com", password: "insecure")
 
@@ -24,11 +24,12 @@ describe Blogging::ArticleDetailHandler do
         request,
         Marten::Routing::MatchParameters{"slug" => article.slug!}
       )
+      handler.render_to_response
 
       handler.context["following"].should be_true
     end
 
-    it "inserts a boolean indicating that the current user does not follow the author of the article" do
+    it "inserts a boolean indicating that the current user does not follow the author of the article in the context" do
       user = create_user(username: "test1", email: "test1@example.com", password: "insecure")
       other_user = create_user(username: "test2", email: "test2@example.com", password: "insecure")
 
@@ -48,11 +49,12 @@ describe Blogging::ArticleDetailHandler do
         request,
         Marten::Routing::MatchParameters{"slug" => article.slug!}
       )
+      handler.render_to_response
 
       handler.context["following"].should be_false
     end
 
-    it "inserts a boolean indicating that the current user has favorited the considered article" do
+    it "inserts a boolean indicating that the current user has favorited the considered article in the context" do
       user = create_user(username: "test1", email: "test1@example.com", password: "insecure")
       other_user = create_user(username: "test2", email: "test2@example.com", password: "insecure")
 
@@ -74,11 +76,12 @@ describe Blogging::ArticleDetailHandler do
         request,
         Marten::Routing::MatchParameters{"slug" => article.slug!}
       )
+      handler.render_to_response
 
       handler.context["favorited"].should be_true
     end
 
-    it "inserts a boolean indicating that the current user has not favorited the considered article" do
+    it "inserts a boolean indicating that the current user has not favorited the considered article in the context" do
       user = create_user(username: "test1", email: "test1@example.com", password: "insecure")
       other_user = create_user(username: "test2", email: "test2@example.com", password: "insecure")
 
@@ -98,11 +101,12 @@ describe Blogging::ArticleDetailHandler do
         request,
         Marten::Routing::MatchParameters{"slug" => article.slug!}
       )
+      handler.render_to_response
 
       handler.context["favorited"].should be_false
     end
 
-    it "inserts an empty page of comments if the article has no comments" do
+    it "inserts an empty page of comments if the article has no comments in the context" do
       user = create_user(username: "test", email: "test@example.com", password: "insecure")
 
       article = Blogging::Article.create!(
@@ -121,11 +125,12 @@ describe Blogging::ArticleDetailHandler do
         request,
         Marten::Routing::MatchParameters{"slug" => article.slug!}
       )
+      handler.render_to_response
 
       handler.context["comments"].empty?.should be_true
     end
 
-    it "inserts the first page of comments if the article has comments and no page parameter is set" do
+    it "inserts the first page of comments if the article has comments and no page parameter is set in the context" do
       user = create_user(username: "test", email: "test@example.com", password: "insecure")
       other_user = create_user(username: "test2", email: "test2@example.com", password: "insecure")
 
@@ -166,6 +171,7 @@ describe Blogging::ArticleDetailHandler do
         request,
         Marten::Routing::MatchParameters{"slug" => article.slug!}
       )
+      handler.render_to_response
 
       handler.context["comments"].empty?.should be_false
       handler.context["comments"].size.should eq 10
@@ -173,7 +179,7 @@ describe Blogging::ArticleDetailHandler do
       handler.context["comments"].to_a.all? { |c| c.raw.as(Blogging::Comment).article == article }.should be_true
     end
 
-    it "inserts the right page of comments if the article has comments and no page parameter is set" do
+    it "inserts the right page of comments if the article has comments and no page parameter is set in the context" do
       user = create_user(username: "test", email: "test@example.com", password: "insecure")
       other_user = create_user(username: "test2", email: "test2@example.com", password: "insecure")
 
@@ -214,6 +220,7 @@ describe Blogging::ArticleDetailHandler do
         request,
         Marten::Routing::MatchParameters{"slug" => article.slug!}
       )
+      handler.render_to_response
 
       handler.context["comments"].empty?.should be_false
       handler.context["comments"].size.should eq 5

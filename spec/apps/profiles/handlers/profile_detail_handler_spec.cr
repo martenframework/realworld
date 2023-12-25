@@ -1,7 +1,7 @@
 require "./spec_helper"
 
 describe Profiles::ProfileDetailHandler do
-  describe "#context" do
+  describe "#render_to_response" do
     it "inserts the nav bar item variable if the authenticated user corresponds to the profile" do
       user = create_user(username: "test", email: "test@example.com", password: "insecure")
 
@@ -13,6 +13,8 @@ describe Profiles::ProfileDetailHandler do
         request,
         Marten::Routing::MatchParameters{"username" => user.profile!.username!}
       )
+
+      handler.render_to_response
 
       handler.context["nav_bar_item"].should eq "profile"
     end
@@ -30,6 +32,8 @@ describe Profiles::ProfileDetailHandler do
         Marten::Routing::MatchParameters{"username" => user_2.profile!.username!}
       )
 
+      handler.render_to_response
+
       handler.context["nav_bar_item"]?.should be_nil
     end
 
@@ -40,6 +44,8 @@ describe Profiles::ProfileDetailHandler do
         Marten::HTTP::Request.new(method: "GET", resource: "/test/xyz"),
         Marten::Routing::MatchParameters{"username" => user.profile!.username!}
       )
+
+      handler.render_to_response
 
       handler.context["nav_bar_item"]?.should be_nil
     end
@@ -59,6 +65,8 @@ describe Profiles::ProfileDetailHandler do
         Marten::Routing::MatchParameters{"username" => user_2.profile!.username!}
       )
 
+      handler.render_to_response
+
       handler.context["following"]?.should be_true
     end
 
@@ -74,6 +82,8 @@ describe Profiles::ProfileDetailHandler do
         request,
         Marten::Routing::MatchParameters{"username" => user_2.profile!.username!}
       )
+
+      handler.render_to_response
 
       handler.context["following"]?.should be_false
     end
@@ -104,6 +114,8 @@ describe Profiles::ProfileDetailHandler do
         Marten::HTTP::Request.new(method: "GET", resource: "/test/xyz"),
         Marten::Routing::MatchParameters{"username" => user.profile!.username!}
       )
+
+      handler.render_to_response
 
       handler.context["current_tab"].should eq "authored_articles"
 
@@ -143,6 +155,8 @@ describe Profiles::ProfileDetailHandler do
         Marten::Routing::MatchParameters{"username" => user.profile!.username!}
       )
 
+      handler.render_to_response
+
       handler.context["current_tab"].should eq "authored_articles"
 
       page = handler.context["articles"].raw.as(Marten::DB::Query::Page(Blogging::Article))
@@ -178,6 +192,8 @@ describe Profiles::ProfileDetailHandler do
         Marten::HTTP::Request.new(method: "GET", resource: "/test/xyz?articles=authored&page=2"),
         Marten::Routing::MatchParameters{"username" => user.profile!.username!}
       )
+
+      handler.render_to_response
 
       handler.context["current_tab"].should eq "authored_articles"
 
@@ -217,6 +233,8 @@ describe Profiles::ProfileDetailHandler do
         Marten::Routing::MatchParameters{"username" => user.profile!.username!}
       )
 
+      handler.render_to_response
+
       handler.context["current_tab"].should eq "favorited_articles"
 
       page = handler.context["articles"].raw.as(Marten::DB::Query::Page(Blogging::Article))
@@ -254,6 +272,8 @@ describe Profiles::ProfileDetailHandler do
         Marten::HTTP::Request.new(method: "GET", resource: "/test/xyz?articles=favorited&page=2"),
         Marten::Routing::MatchParameters{"username" => user.profile!.username!}
       )
+
+      handler.render_to_response
 
       handler.context["current_tab"].should eq "favorited_articles"
 

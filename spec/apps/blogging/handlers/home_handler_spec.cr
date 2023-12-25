@@ -1,11 +1,13 @@
 require "./spec_helper"
 
 describe Blogging::HomeHandler do
-  describe "#context" do
+  describe "#render_to_response" do
     context "with an anonymous user" do
       it "inserts a boolean indicating that no user is followed" do
         request = Marten::HTTP::Request.new(method: "GET", resource: "/test/xyz")
         handler = Blogging::HomeHandler.new(request, Marten::Routing::MatchParameters.new)
+
+        handler.render_to_response
 
         handler.context["following_users"].should be_false
       end
@@ -26,6 +28,8 @@ describe Blogging::HomeHandler do
         request = Marten::HTTP::Request.new(method: "GET", resource: "/test/xyz")
 
         handler = Blogging::HomeHandler.new(request, Marten::Routing::MatchParameters.new)
+
+        handler.render_to_response
 
         handler.context["current_tab"].should eq "global"
 
@@ -53,6 +57,8 @@ describe Blogging::HomeHandler do
 
         handler = Blogging::HomeHandler.new(request, Marten::Routing::MatchParameters.new)
 
+        handler.render_to_response
+
         handler.context["current_tab"].should eq "global"
 
         page = handler.context["articles"].raw.as(Marten::DB::Query::Page(Blogging::Article))
@@ -78,6 +84,8 @@ describe Blogging::HomeHandler do
         request = Marten::HTTP::Request.new(method: "GET", resource: "/test/xyz?articles=global")
 
         handler = Blogging::HomeHandler.new(request, Marten::Routing::MatchParameters.new)
+
+        handler.render_to_response
 
         handler.context["current_tab"].should eq "global"
 
@@ -105,6 +113,8 @@ describe Blogging::HomeHandler do
 
         handler = Blogging::HomeHandler.new(request, Marten::Routing::MatchParameters.new)
 
+        handler.render_to_response
+
         handler.context["current_tab"].should eq "global"
 
         page = handler.context["articles"].raw.as(Marten::DB::Query::Page(Blogging::Article))
@@ -131,6 +141,8 @@ describe Blogging::HomeHandler do
 
         handler = Blogging::HomeHandler.new(request, Marten::Routing::MatchParameters.new)
 
+        handler.render_to_response
+
         handler.context["current_tab"].should eq "global"
 
         page = handler.context["articles"].raw.as(Marten::DB::Query::Page(Blogging::Article))
@@ -154,6 +166,8 @@ describe Blogging::HomeHandler do
 
         handler = Blogging::HomeHandler.new(request, Marten::Routing::MatchParameters.new)
 
+        handler.render_to_response
+
         handler.context["following_users"].should be_true
       end
 
@@ -165,6 +179,8 @@ describe Blogging::HomeHandler do
         MartenAuth.sign_in(request, user)
 
         handler = Blogging::HomeHandler.new(request, Marten::Routing::MatchParameters.new)
+
+        handler.render_to_response
 
         handler.context["following_users"].should be_false
       end
@@ -199,6 +215,8 @@ describe Blogging::HomeHandler do
         MartenAuth.sign_in(request, user)
 
         handler = Blogging::HomeHandler.new(request, Marten::Routing::MatchParameters.new)
+
+        handler.render_to_response
 
         handler.context["current_tab"].should eq "user"
 
@@ -240,6 +258,8 @@ describe Blogging::HomeHandler do
 
         handler = Blogging::HomeHandler.new(request, Marten::Routing::MatchParameters.new)
 
+        handler.render_to_response
+
         handler.context["current_tab"].should eq "user"
 
         page = handler.context["articles"].raw.as(Marten::DB::Query::Page(Blogging::Article))
@@ -279,6 +299,8 @@ describe Blogging::HomeHandler do
         MartenAuth.sign_in(request, user)
 
         handler = Blogging::HomeHandler.new(request, Marten::Routing::MatchParameters.new)
+
+        handler.render_to_response
 
         handler.context["current_tab"].should eq "user"
 
@@ -320,6 +342,8 @@ describe Blogging::HomeHandler do
 
         handler = Blogging::HomeHandler.new(request, Marten::Routing::MatchParameters.new)
 
+        handler.render_to_response
+
         handler.context["current_tab"].should eq "user"
 
         page = handler.context["articles"].raw.as(Marten::DB::Query::Page(Blogging::Article))
@@ -348,6 +372,8 @@ describe Blogging::HomeHandler do
         MartenAuth.sign_in(request, user)
 
         handler = Blogging::HomeHandler.new(request, Marten::Routing::MatchParameters.new)
+
+        handler.render_to_response
 
         handler.context["current_tab"].should eq "global"
 
@@ -381,6 +407,8 @@ describe Blogging::HomeHandler do
 
         handler = Blogging::HomeHandler.new(request, Marten::Routing::MatchParameters.new)
 
+        handler.render_to_response
+
         handler.context["current_tab"].should eq "global"
 
         page = handler.context["articles"].raw.as(Marten::DB::Query::Page(Blogging::Article))
@@ -410,6 +438,8 @@ describe Blogging::HomeHandler do
 
         handler = Blogging::HomeHandler.new(request, Marten::Routing::MatchParameters.new)
 
+        handler.render_to_response
+
         handler.context["current_tab"].should eq "global"
 
         page = handler.context["articles"].raw.as(Marten::DB::Query::Page(Blogging::Article))
@@ -438,6 +468,8 @@ describe Blogging::HomeHandler do
         MartenAuth.sign_in(request, user)
 
         handler = Blogging::HomeHandler.new(request, Marten::Routing::MatchParameters.new)
+
+        handler.render_to_response
 
         handler.context["current_tab"].should eq "global"
 

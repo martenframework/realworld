@@ -5,24 +5,25 @@ module Blogging
     lookup_field :slug
     record_context_name :article
 
-    def context
-      ctx = super
-
-      if request.user? && record.author != request.user!.profile
-        ctx[:following] = request.user!.profile!.followed_users.exists?(pk: record.author_id)
-      end
-
-      if request.user?
-        ctx[:favorited] = request.user!.profile!.favorite_articles.exists?(pk: record.pk)
-      end
-
-      ctx[:comments] = paginated_comments
-
-      ctx
-    end
+    before_render :add_user_data_to_context
+    before_render :add_paginated_comments_to_context
 
     private COMMENT_PAGE_PARAM = "comment_page"
     private COMMENT_PAGE_SIZE  = 10
+
+    private def add_paginated_comments_to_context
+      context[:comments] = paginated_comments
+    end
+
+    private def add_user_data_to_context
+      if request.user? && record.author != request.user!.profile
+        context[:following] = request.user!.profile!.followed_users.exists?(pk: record.author_id)
+      end
+
+      if request.user?
+        context[:favorited] = request.user!.profile!.favorite_articles.exists?(pk: record.pk)
+      end
+    end
 
     private def comment_page_number
       request.query_params[COMMENT_PAGE_PARAM]?.try(&.to_i) || 1

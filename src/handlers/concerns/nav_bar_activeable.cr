@@ -3,6 +3,8 @@ module NavBarActiveable
     class_getter nav_bar_item : String?
 
     extend NavBarActiveable::ClassMethods
+
+    before_render :add_nav_bar_item_to_context
   end
 
   module ClassMethods
@@ -11,12 +13,7 @@ module NavBarActiveable
     end
   end
 
-  def context
-    ctx = super
-    ctx ||= Marten::Template::Context.new
-
-    ctx["nav_bar_item"] = self.class.nav_bar_item
-
-    ctx
+  private def add_nav_bar_item_to_context
+    context[:nav_bar_item] = self.class.nav_bar_item
   end
 end

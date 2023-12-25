@@ -11,10 +11,12 @@ describe NavBarActiveable do
     end
   end
 
-  describe "#context" do
+  describe "#render_to_response" do
     it "adds the configured nav bar item to the context" do
       request = Marten::HTTP::Request.new(method: "GET", resource: "/test/xyz")
       handler = NavBarActiveableSpec::TestWithStringHandler.new(request)
+
+      handler.render_to_response
 
       handler.context["nav_bar_item"].should eq "home"
     end
@@ -25,12 +27,14 @@ module NavBarActiveableSpec
   class TestWithStringHandler < Marten::Handlers::Template
     include NavBarActiveable
 
+    template_name "base.html"
     nav_bar_item "home"
   end
 
   class TestWithSymbolHandler < Marten::Handlers::Template
     include NavBarActiveable
 
+    template_name "base.html"
     nav_bar_item :home
   end
 end
