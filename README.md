@@ -40,7 +40,7 @@ The development server should be accessible at http://127.0.0.1:8000.
 
 ## Frontend development
 
-This project uses [Gulp](https://gulpjs.com/) and [Webpack](https://webpack.js.org) to bundle the assets of the application. Client-side scripts are written using **vanilla JS** and the stylesheets used are the precompiled ones that are [provided by the Realworkd project](https://realworld-docs.netlify.app/docs/specs/frontend-specs/styles). All the tools necessary to work on the assets of this project should've been installed when running `make` in the previous sections.
+This project uses [Gulp](https://gulpjs.com/) and [Webpack](https://webpack.js.org) to bundle the assets of the application. Client-side scripts are written using **vanilla JS** and the stylesheets used are the precompiled ones that are [provided by the Realworld project](https://realworld-docs.netlify.app/docs/specs/frontend-specs/styles). All the tools necessary to work on the assets of this project should've been installed when running `make` in the previous sections.
 
 Client-side scripts are stored in the `src/assets/build_dev` folder. Whenever those scripts need to be recompiled, the following command can be used:
 
