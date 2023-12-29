@@ -479,6 +479,130 @@ describe Blogging::HomeHandler do
           article.author.should eq other_user.profile!
         end
       end
+
+      it "inserts the first page of tag-specific articles when a tag is targeted" do
+        user = create_user(username: "test1", email: "test1@example.com", password: "insecure")
+        other_user = create_user(username: "test2", email: "test2@example.com", password: "insecure")
+
+        tag = Blogging::Tag.create!(label: "test")
+        other_tag = Blogging::Tag.create!(label: "other")
+
+        15.times do |i|
+          article = Blogging::Article.create!(
+            title: "Article #{i}",
+            slug: "article-#{i}",
+            description: "My article description",
+            body: "# Hello World",
+            author: other_user.profile!,
+          )
+
+          article.tags.add(tag)
+        end
+
+        15.times do |i|
+          article = Blogging::Article.create!(
+            title: "Other article #{i}",
+            slug: "article-#{i}",
+            description: "My article description",
+            body: "# Hello World",
+            author: other_user.profile!,
+          )
+
+          article.tags.add(other_tag)
+        end
+
+        request = Marten::HTTP::Request.new(method: "GET", resource: "/test/xyz?tag=test")
+        request.session = Marten::HTTP::Session::Store::Cookie.new("sessionkey")
+        MartenAuth.sign_in(request, user)
+
+        handler = Blogging::HomeHandler.new(request, Marten::Routing::MatchParameters.new)
+
+        handler.render_to_response
+
+        handler.context["current_tab"].should eq "tag"
+
+        page = handler.context["articles"].raw.as(Marten::DB::Query::Page(Blogging::Article))
+        page.size.should eq 10
+        page.each do |article|
+          article.title!.starts_with?("Article").should be_true
+        end
+      end
+
+      it "inserts the right page of tag-specific articles when a tag is targeted and a page is set" do
+        user = create_user(username: "test1", email: "test1@example.com", password: "insecure")
+        other_user = create_user(username: "test2", email: "test2@example.com", password: "insecure")
+
+        tag = Blogging::Tag.create!(label: "test")
+        other_tag = Blogging::Tag.create!(label: "other")
+
+        15.times do |i|
+          article = Blogging::Article.create!(
+            title: "Article #{i}",
+            slug: "article-#{i}",
+            description: "My article description",
+            body: "# Hello World",
+            author: other_user.profile!,
+          )
+
+          article.tags.add(tag)
+        end
+
+        15.times do |i|
+          article = Blogging::Article.create!(
+            title: "Other article #{i}",
+            slug: "article-#{i}",
+            description: "My article description",
+            body: "# Hello World",
+            author: other_user.profile!,
+          )
+
+          article.tags.add(other_tag)
+        end
+
+        request = Marten::HTTP::Request.new(method: "GET", resource: "/test/xyz?tag=test&page=2")
+        request.session = Marten::HTTP::Session::Store::Cookie.new("sessionkey")
+        MartenAuth.sign_in(request, user)
+
+        handler = Blogging::HomeHandler.new(request, Marten::Routing::MatchParameters.new)
+
+        handler.render_to_response
+
+        handler.context["current_tab"].should eq "tag"
+
+        page = handler.context["articles"].raw.as(Marten::DB::Query::Page(Blogging::Article))
+        page.size.should eq 5
+        page.each do |article|
+          article.title!.starts_with?("Article").should be_true
+        end
+      end
+
+      it "inserts the expected popular tags" do
+        user = create_user(username: "test1", email: "test1@example.com", password: "insecure")
+        other_user = create_user(username: "test2", email: "test2@example.com", password: "insecure")
+
+        25.times do |i|
+          article = Blogging::Article.create!(
+            title: "Article #{i}",
+            slug: "article-#{i}",
+            description: "My article description",
+            body: "# Hello World",
+            author: other_user.profile!,
+          )
+
+          tag = Blogging::Tag.create!(label: "tag-#{i}")
+          article.tags.add(tag)
+        end
+
+        request = Marten::HTTP::Request.new(method: "GET", resource: "/test/xyz?articles=global")
+        request.session = Marten::HTTP::Session::Store::Cookie.new("sessionkey")
+        MartenAuth.sign_in(request, user)
+
+        handler = Blogging::HomeHandler.new(request, Marten::Routing::MatchParameters.new)
+
+        handler.render_to_response
+
+        handler.context["tags"].to_a.should eq Blogging::Tag.all[..20].to_a
+      end
     end
   end
 end

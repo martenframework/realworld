@@ -58,7 +58,7 @@
                 name="{{ schema.tags.id }}"
                 value="{{ schema.tags.value }}"
               />
-              <input id="tags_fake_input" type="text" class="form-control" placeholder="Enter tags" />
+              <input id="tags_fake_input" type="text" class="form-control" placeholder="Enter tags" autocomplete="off" />
               <div id="tags_list" class="tag-list">
               </div>
               {% for error in schema.tags.errors %}<div class="invalid-feedback">{{ error.message }}</div>{% endfor %}

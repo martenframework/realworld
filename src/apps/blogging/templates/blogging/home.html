@@ -24,6 +24,11 @@
             <li class="nav-item">
               <a class="nav-link{% if current_tab == 'global' %} active{% endif %}" href="?articles=global">Global Feed</a>
             </li>
+            {% if targeted_tag %}
+            <li class="nav-item">
+              <a class="nav-link active" href="?tag={{ targeted_tag }}"><i class="ion-pound"></i> {{ targeted_tag }}</a>
+            </li>
+            {% endif %}
           </ul>
         </div>
 
@@ -36,22 +41,18 @@
         {% include "partials/article_feed.html" with additional_page_params = articles_query_param %}
       </div>
 
+      {% if not tags.empty? %}
       <div class="col-md-3">
         <div class="sidebar">
           <p>Popular Tags</p>
-
           <div class="tag-list">
-            <a href="" class="tag-pill tag-default">programming</a>
-            <a href="" class="tag-pill tag-default">javascript</a>
-            <a href="" class="tag-pill tag-default">emberjs</a>
-            <a href="" class="tag-pill tag-default">angularjs</a>
-            <a href="" class="tag-pill tag-default">react</a>
-            <a href="" class="tag-pill tag-default">mean</a>
-            <a href="" class="tag-pill tag-default">node</a>
-            <a href="" class="tag-pill tag-default">rails</a>
+            {% for tag in tags %}
+            <a href="?tag={{ tag.label }}" class="tag-pill tag-default">{{ tag.label }}</a>
+            {% endfor %}
           </div>
         </div>
       </div>
+      {% endif %}
     </div>
   </div>
 </div>
