@@ -37,6 +37,25 @@ $ make server
 
 The development server should be accessible at http://127.0.0.1:8000.
 
+
+## Frontend development
+
+This project uses [Gulp](https://gulpjs.com/) and [Webpack](https://webpack.js.org) to bundle the assets of the application. Client-side scripts are written using **vanilla JS** and the stylesheets used are the precompiled ones that are [provided by the Realworkd project](https://realworld-docs.netlify.app/docs/specs/frontend-specs/styles). All the tools necessary to work on the assets of this project should've been installed when running `make` in the previous sections.
+
+Client-side scripts are stored in the `src/assets/build_dev` folder. Whenever those scripts need to be recompiled, the following command can be used:
+
+```shell
+npm run gulp -- build
+```
+
+Finally, a Webpack dev server can also be launched in order to use hot reloading if necessary. To do so, the following command can be used:
+
+```shell
+npm run gulp -- webpack-dev-server
+```
+
+Note that the Marten development server should be started in another terminal _after_ the Webpack dev server has been started.
+
 ## Running the test suite
 
 The test suite can be run using the following command:
