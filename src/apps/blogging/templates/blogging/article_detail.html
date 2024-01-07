@@ -25,10 +25,12 @@
         </button>
         &nbsp;&nbsp;
         {% endif %}
+        {% if request.user? %}
         <button class="favorite-button btn btn-sm {% if favorited %}btn-primary{% else %}btn-outline-primary{% endif %}" data-article-slug="{{ article.slug }}">
           <i class="ion-heart"></i>
           &nbsp; <span class="text">Favorite Article</span> (<span class="counter">{{ article.favorited_by.size }}</span>)
         </button>
+        {% endif %}
         {% if request.user? && request.user.profile == article.author %}
         <a href="{% url 'blogging:article_update' slug: article.slug %}" class="btn btn-sm btn-outline-secondary">
           <i class="ion-edit"></i> Edit Article
@@ -71,10 +73,12 @@
         </button>
         &nbsp;&nbsp;
         {% endif %}
+        {% if request.user? %}
         <button class="favorite-button btn btn-sm {% if favorited %}btn-primary{% else %}btn-outline-primary{% endif %}" data-article-slug="{{ article.slug }}">
           <i class="ion-heart"></i>
           &nbsp; <span class="text">Favorite Article</span> (<span class="counter">{{ article.favorited_by.size }}</span>)
         </button>
+        {% endif %}
         {% if request.user? && request.user.profile == article.author %}
         <a href="{% url 'blogging:article_update' slug: article.slug %}" class="btn btn-sm btn-outline-secondary">
           <i class="ion-edit"></i> Edit Article
