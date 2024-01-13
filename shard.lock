@@ -1,9 +1,8 @@
-# NOTICE: This lockfile contains some overrides from shard.override.yml
 version: 2.0
 shards:
   ameba:
     git: https://github.com/crystal-ameba/ameba.git
-    version: 1.5.0+git.commit.7174e81a13f3cb3b3d317e236616149b4360de18
+    version: 1.6.1+git.commit.734bb2a7f1e70f0a718bc4415888aca8d9e7177a
 
   cmark:
     git: https://github.com/amauryt/cr-cmark-gfm.git
@@ -11,15 +10,15 @@ shards:
 
   db:
     git: https://github.com/crystal-lang/crystal-db.git
-    version: 0.12.0
+    version: 0.13.1
 
   i18n:
     git: https://github.com/crystal-i18n/i18n.git
     version: 0.2.1
 
-  marten: # Overridden
-    path: ./shard_overrides/marten
-    version: 0.3.2
+  marten:
+    git: https://github.com/martenframework/marten.git
+    version: 0.4.0
 
   marten_auth:
     git: https://github.com/martenframework/marten-auth.git
@@ -31,7 +30,7 @@ shards:
 
   sqlite3:
     git: https://github.com/crystal-lang/crystal-sqlite3.git
-    version: 0.20.0
+    version: 0.21.0
 
   timecop:
     git: https://github.com/crystal-community/timecop.cr.git

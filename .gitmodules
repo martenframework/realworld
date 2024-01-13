@@ -1,3 +1,0 @@
-[submodule "shard_overrides/marten"]
-	path = shard_overrides/marten
-	url = https://github.com/martenframework/marten.git
