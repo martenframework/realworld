@@ -39,7 +39,7 @@ describe Profiles::SettingsUpdateHandler do
       url = Marten.routes.reverse("profiles:settings_update")
       response = Marten::Spec.client.post(url, data: {"email" => ""})
 
-      response.status.should eq 200
+      response.status.should eq 422
       response.content.includes?("Your Settings").should be_true
     end
 

@@ -28,7 +28,7 @@ describe Auth::SignInHandler do
       url = Marten.routes.reverse("auth:sign_in")
       response = Marten::Spec.client.post(url, data: {"email": "", "password": ""})
 
-      response.status.should eq 200
+      response.status.should eq 422
       response.content.includes?("Sign in").should be_true
     end
 
@@ -38,7 +38,7 @@ describe Auth::SignInHandler do
       url = Marten.routes.reverse("auth:sign_in")
       response = Marten::Spec.client.post(url, data: {"email": user.email, "password": "bad"})
 
-      response.status.should eq 200
+      response.status.should eq 422
       response.content.includes?("Sign in").should be_true
       response.content.includes?(
         "Please enter a correct email address and password. Note that both fields may be case-sensitive."
@@ -51,7 +51,7 @@ describe Auth::SignInHandler do
       url = Marten.routes.reverse("auth:sign_in")
       response = Marten::Spec.client.post(url, data: {"email": user.email, "password": "bad"})
 
-      response.status.should eq 200
+      response.status.should eq 422
       response.content.includes?("Sign in").should be_true
       response.content.includes?(
         "Please enter a correct email address and password. Note that both fields may be case-sensitive."

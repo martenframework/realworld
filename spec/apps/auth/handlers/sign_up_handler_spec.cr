@@ -28,7 +28,7 @@ describe Auth::SignUpHandler do
       url = Marten.routes.reverse("auth:sign_up")
       response = Marten::Spec.client.post(url, data: {"username": "", "email": "", "password": ""})
 
-      response.status.should eq 200
+      response.status.should eq 422
       response.content.includes?("Sign up").should be_true
     end
 
