@@ -56,7 +56,7 @@ format_crystal:
 lint: lint_crystal lint_js
 ## Trigger code Crystal quality checks.
 lint_crystal:
-	crystal tool format --exclude docs --check
+	crystal tool format --exclude docs --exclude tmp --check
 	bin/ameba
 ## Trigger Javascript code quality checks (eslint).
 lint_js:
