@@ -4,7 +4,7 @@ version: 0.1.0
 dependencies:
   cmark:
     github: amauryt/cr-cmark-gfm
-    version: ~> 0.1.3
+    branch: master
   marten:
     github: martenframework/marten
   marten_auth:
