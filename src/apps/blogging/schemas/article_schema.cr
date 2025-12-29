@@ -32,9 +32,9 @@ module Blogging
       return if tags.nil?
       return if tags!.empty?
 
-      splitted_tags = tags_array
-      errors.add(:tags, "Too many tags specified") if splitted_tags.size > TAG_LIMIT
-      splitted_tags.each do |tag|
+      split_tags = tags_array
+      errors.add(:tags, "Too many tags specified") if split_tags.size > TAG_LIMIT
+      split_tags.each do |tag|
         errors.add(:tags, "Invalid tag specified: #{tag}") unless tag.matches?(TAG_RE) && tag.size <= TAG_MAX_SIZE
       end
     end
