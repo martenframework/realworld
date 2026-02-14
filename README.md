@@ -12,7 +12,7 @@ For more information on how to this works with other frontends/backends, head ov
 
 ## System requirements
 
-* [Crystal](https://crystal-lang.org/) 1.18+
+* [Crystal](https://crystal-lang.org/) 1.19+
 * [Node.js](https://nodejs.org/en/) - 18.x
 
 ## Installation
