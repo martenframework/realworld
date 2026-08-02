@@ -2,7 +2,7 @@ version: 2.0
 shards:
   ameba:
     git: https://github.com/crystal-ameba/ameba.git
-    version: 1.7.0-dev+git.commit.95277396e615f0c216f2cbb7993d968d250d3071
+    version: 1.7.0-dev+git.commit.cdd58b34b0d8a9c785d67183a7a8f07541549e55
 
   cmark:
     git: https://github.com/amauryt/cr-cmark-gfm.git
@@ -18,7 +18,7 @@ shards:
 
   marten:
     git: https://github.com/martenframework/marten.git
-    version: 0.6.2
+    version: 0.6.3
 
   marten_auth:
     git: https://github.com/martenframework/marten-auth.git
@@ -30,9 +30,9 @@ shards:
 
   sqlite3:
     git: https://github.com/crystal-lang/crystal-sqlite3.git
-    version: 0.22.0
+    version: 0.23.0
 
   timecop:
     git: https://github.com/crystal-community/timecop.cr.git
-    version: 0.5.0
+    version: 0.6.0
 
