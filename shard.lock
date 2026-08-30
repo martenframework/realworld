@@ -2,7 +2,7 @@ version: 2.0
 shards:
   ameba:
     git: https://github.com/crystal-ameba/ameba.git
-    version: 1.7.0-dev+git.commit.cdd58b34b0d8a9c785d67183a7a8f07541549e55
+    version: 1.7.1-dev+git.commit.72924b6848cb1fa2bafb2c6fcace756d077094fb
 
   cmark:
     git: https://github.com/amauryt/cr-cmark-gfm.git
@@ -18,7 +18,7 @@ shards:
 
   marten:
     git: https://github.com/martenframework/marten.git
-    version: 0.6.3
+    version: 0.7.0
 
   marten_auth:
     git: https://github.com/martenframework/marten-auth.git
